@@ -51,8 +51,8 @@ export default function Taskbar() {
                             whileTap={{ scale: 0.95 }}
                             onClick={() => focusWindow(window.id)}
                             className={`relative w-12 h-12 rounded-xl flex items-center justify-center transition-all ${window.isMinimized
-                                    ? 'bg-white/5'
-                                    : 'bg-gradient-to-br from-white/20 to-white/10'
+                                ? 'bg-white/5'
+                                : 'bg-gradient-to-br from-white/20 to-white/10'
                                 }`}
                         >
                             <Icon className="w-6 h-6 text-white/90" />
@@ -81,7 +81,7 @@ export default function Taskbar() {
                     <Github className="w-6 h-6 text-white/90" />
                 </motion.a>
                 <motion.a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/hritik-raj-8804hr/"
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -5 }}
