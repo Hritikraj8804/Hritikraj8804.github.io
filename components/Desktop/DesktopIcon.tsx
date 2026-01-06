@@ -1,16 +1,18 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 
 interface DesktopIconProps {
     name: string;
-    icon: LucideIcon;
+    icon?: LucideIcon;
+    imageSrc?: string;
     onClick: () => void;
 }
 
-export default function DesktopIcon({ name, icon: Icon, onClick }: DesktopIconProps) {
+export default function DesktopIcon({ name, icon: Icon, imageSrc, onClick }: DesktopIconProps) {
     return (
         <motion.button
             whileHover={{ scale: 1.05 }}
@@ -19,8 +21,18 @@ export default function DesktopIcon({ name, icon: Icon, onClick }: DesktopIconPr
             onDoubleClick={onClick}
             className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group w-24"
         >
-            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 group-hover:border-white/20 transition-all shadow-lg">
-                <Icon className="w-7 h-7 text-white/90" />
+            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 group-hover:border-white/20 transition-all shadow-lg overflow-hidden">
+                {imageSrc ? (
+                    <Image
+                        src={imageSrc}
+                        alt={name}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                    />
+                ) : Icon ? (
+                    <Icon className="w-7 h-7 text-white/90" />
+                ) : null}
             </div>
             <span className="text-xs text-white/80 text-center font-medium leading-tight drop-shadow-lg">
                 {name}

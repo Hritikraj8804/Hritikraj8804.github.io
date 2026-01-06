@@ -9,7 +9,7 @@ import { useWindowManager } from '../Window/WindowManagerContext';
 const desktopApps = [
     { id: 'terminal', name: 'Terminal', icon: Terminal, component: 'terminal' },
     { id: 'projects', name: 'Projects', icon: FolderOpen, component: 'projects' },
-    { id: 'about', name: 'About Me', icon: User, component: 'about' },
+    { id: 'about', name: 'About Me', icon: User, imageSrc: '/images/x.jpg', component: 'about' },
     { id: 'contact', name: 'Contact', icon: Mail, component: 'contact' },
     { id: 'resume', name: 'Resume', icon: FileText, component: 'resume' },
 ];
@@ -78,6 +78,7 @@ export default function Desktop() {
                         <DesktopIcon
                             name={app.name}
                             icon={app.icon}
+                            imageSrc={(app as { imageSrc?: string }).imageSrc}
                             onClick={() => handleOpenApp(app)}
                         />
                     </motion.div>
