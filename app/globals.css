@@ -90,3 +90,73 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* Custom cursor styles */
+body {
+  cursor: default;
+}
+
+/* Pointer cursor for clickable elements */
+button,
+a,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Grab cursor for draggable elements */
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grab:active,
+.cursor-grabbing {
+  cursor: grabbing;
+}
+
+/* Custom cursors for window controls */
+.cursor-close:hover {
+  cursor: pointer;
+}
+
+.cursor-minimize:hover {
+  cursor: pointer;
+}
+
+.cursor-maximize:hover {
+  cursor: pointer;
+}
+
+/* Text cursor for input elements */
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+/* Resize cursors */
+.cursor-resize-se {
+  cursor: se-resize;
+}
+
+.cursor-resize-sw {
+  cursor: sw-resize;
+}
+
+.cursor-resize-nw {
+  cursor: nw-resize;
+}
+
+.cursor-resize-ne {
+  cursor: ne-resize;
+}
+
+/* Not allowed cursor */
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+/* Help cursor */
+.cursor-help {
+  cursor: help;
+}
