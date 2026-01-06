@@ -3,156 +3,144 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import {
+    Github,
+    Linkedin,
+    User,
+    Mail,
+    Calendar
+} from 'lucide-react';
 
 const socials = [
     { name: 'GitHub', icon: Github, url: 'https://github.com/Hritikraj8804' },
-    { name: 'Twitter', icon: Twitter, url: 'https://twitter.com' },
     { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/hritik-raj-8804hr/' },
-];
-
-const experience = [
-    {
-        role: 'Cloud & DevOps Enthusiast',
-        company: 'Self-learning',
-        url: '#',
-    },
-    {
-        role: 'Open Source Contributor',
-        company: 'Various Projects',
-        url: 'https://github.com/Hritikraj8804',
-    },
 ];
 
 export default function About() {
     return (
-        <div className="h-full bg-[#f5f5f5] text-gray-800 overflow-auto">
-            <div className="flex min-h-full">
-                {/* Left Sidebar */}
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#e9ecef', color: '#333', overflow: 'hidden', fontFamily: 'sans-serif' }}>
+
+            {/* Top Status Bar - Matching First Reference */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 20px', backgroundColor: '#f8f9fa', borderBottom: '1px solid #dee2e6' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#495057' }}>
+                    <User style={{ width: '18px', height: '18px', color: '#5e35b1' }} />
+                    <span style={{ fontWeight: 600, fontSize: '14px' }}>About Hritik</span>
+                </div>
+                <span style={{ fontSize: '13px', color: '#6c757d' }}>DevOps Enthusiast</span>
+            </div>
+
+            <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+
+                {/* Left Sidebar - Styled like Ref 1 */}
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="w-52 bg-white border-r border-gray-200 p-6 flex flex-col"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    style={{
+                        width: '220px',
+                        backgroundColor: '#f1f3f5',
+                        borderRight: '1px solid #dee2e6',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexShrink: 0,
+                    }}
                 >
-                    {/* Profile Picture */}
-                    <div className="flex flex-col items-center mb-6">
-                        <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 mb-3">
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 20px' }}>
+                        <div style={{ width: '110px', height: '110px', borderRadius: '50%', overflow: 'hidden', marginBottom: '16px', border: '4px solid white', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
                             <Image
                                 src="/images/x.jpg"
                                 alt="Hritik Raj"
-                                width={96}
-                                height={96}
-                                className="w-full h-full object-cover"
+                                width={110}
+                                height={110}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                         </div>
-                        <h2 className="text-lg font-semibold text-gray-900">Hritik Raj</h2>
+                        <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#212529', textAlign: 'center' }}>Hritik Raj</h2>
                     </div>
 
-                    {/* Socials */}
-                    <div className="mb-6">
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                    {/* Socials Section */}
+                    <div style={{ padding: '0 24px' }}>
+                        <h3 style={{ fontSize: '11px', fontWeight: 700, color: '#adb5bd', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>
                             Socials
                         </h3>
-                        <div className="space-y-2">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                             {socials.map((social) => (
                                 <a
                                     key={social.name}
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                                    style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#495057', textDecoration: 'none' }}
                                 >
-                                    <social.icon className="w-4 h-4" />
+                                    <social.icon style={{ width: '16px', height: '16px', color: '#868e96' }} />
                                     <span>{social.name}</span>
                                 </a>
                             ))}
                         </div>
                     </div>
-
-                    {/* Contact */}
-                    <div>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                            Contact
-                        </h3>
-                        <a
-                            href="mailto:hritikraj8804@gmail.com"
-                            className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
-                        >
-                            <Mail className="w-4 h-4" />
-                            <span>Email</span>
-                        </a>
-                    </div>
                 </motion.div>
 
-                {/* Right Content */}
+                {/* Main Content Area */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex-1 p-8"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    style={{ flex: 1, overflowY: 'auto', backgroundColor: 'white', margin: '15px', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}
                 >
-                    {/* Header */}
-                    <div className="flex justify-between items-start mb-8">
-                        <div></div>
-                        <span className="text-sm text-gray-500">Technology Enthusiast</span>
+                    <div style={{ padding: '40px' }}>
+                        {/* Section Header */}
+                        <section>
+                            <h3 style={{ fontSize: '12px', fontWeight: 700, color: '#adb5bd', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '24px', borderBottom: '1px solid #f1f3f5', paddingBottom: '8px' }}>
+                                About
+                            </h3>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontSize: '15px', color: '#495057', lineHeight: 1.7 }}>
+                                <p style={{ margin: 0 }}>
+                                    I&apos;m an introvert who has missed more opportunities than I like to admit.
+                                    I&apos;m the person who still attends class even when no one else shows up…
+                                    and somehow ends up scoring less than the people who never attended.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    I get FOMO easily I start many things, get excited for a few days,
+                                    then drop some of them halfway. I chose <strong style={{ color: '#212529' }}>DevOps</strong> because I enjoy systems,
+                                    automation, and tools and honestly, because I don&apos;t really enjoy
+                                    traditional coding.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    I&apos;ve taught people subjects… and still ended up with backlogs myself.
+                                    I&apos;ve sat through hundreds of meetings in silence. I&apos;ve laughed at
+                                    people at times and life came full circle, and now some of them laugh at me.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    I&apos;m still unemployed, still figuring things out, still unsure about
+                                    effort vs ambition. I&apos;ve never opened an AWS account because I&apos;m
+                                    scared I&apos;ll mess up and get charged heavily and because I know myself
+                                    well enough to admit it.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    But here I am still learning, still showing up, still trying to understand
+                                    my pace, my strengths, my flaws, and my path.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    I believe in taking small steps, building consistency, and embracing failure
+                                    as part of the journey. Every day I try to learn something new whether it&apos;s Docker, Kubernetes, Linux, or just understanding how things work under the hood.
+                                </p>
+
+                                <p style={{ margin: 0 }}>
+                                    My goal is simple: to become good enough at what I do to be useful, to contribute
+                                    to teams and projects that matter, and to someday look back and feel proud of
+                                    how far I&apos;ve come.
+                                </p>
+
+                                <p style={{ margin: 0, color: '#adb5bd', fontStyle: 'italic', paddingTop: '8px' }}>
+                                    Not perfect. Not polished. Just honest.
+                                </p>
+                            </div>
+                        </section>
                     </div>
-
-                    {/* Experience */}
-                    <section className="mb-8">
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                            Experience
-                        </h3>
-                        <div className="space-y-3">
-                            {experience.map((exp, index) => (
-                                <motion.div
-                                    key={exp.role}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3 + index * 0.1 }}
-                                    className="flex justify-between items-center"
-                                >
-                                    <span className="text-gray-800">{exp.role}</span>
-                                    <a
-                                        href={exp.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
-                                    >
-                                        {exp.company}
-                                        <ExternalLink className="w-3 h-3" />
-                                    </a>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* About */}
-                    <section>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                            About
-                        </h3>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
-                            className="space-y-4 text-gray-700 leading-relaxed"
-                        >
-                            <p>
-                                Technology enthusiast with experience in <strong>cloud computing</strong> and{' '}
-                                <strong>DevOps</strong>. Actively contributes to open-source communities and
-                                participates in developer programs and initiatives.
-                            </p>
-                            <p>
-                                Strong interest in learning, collaboration, and building practical, user-focused
-                                tech solutions.
-                            </p>
-                            <p>
-                                I enjoy exploring new technologies, automating workflows, and creating tools that
-                                make development more efficient. Currently focused on expanding my skills in
-                                container orchestration, CI/CD pipelines, and infrastructure as code.
-                            </p>
-                        </motion.div>
-                    </section>
                 </motion.div>
             </div>
         </div>
