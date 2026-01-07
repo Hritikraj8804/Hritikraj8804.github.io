@@ -119,11 +119,11 @@ export default function Window({ window: windowState, children }: WindowProps) {
         >
             {/* Window Header */}
             <div
-                className={`h-10 bg-[#1e1e1e] flex items-center px-3 select-none group/header ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+                className={`h-10 bg-[#1e1e1e] flex items-center px-4 select-none group/header ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                 onMouseDown={handleDragStart}
             >
                 {/* Traffic Light Controls */}
-                <div className="flex gap-2 mr-4">
+                <div className="flex gap-2 mr-4" style={{ marginLeft: '12px' }}>
                     <button
                         onClick={(e) => { e.stopPropagation(); closeWindow(windowState.id); }}
                         className="w-3 h-3 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 transition-colors flex items-center justify-center cursor-pointer"
