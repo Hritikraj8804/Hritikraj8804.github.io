@@ -65,7 +65,7 @@ export default function TopMenuBar() {
     const menuRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
 
-    const { windows, closeWindow, openWindow } = useWindowManager();
+    const { windows, closeWindow, openWindow, focusWindow, activeWindowId } = useWindowManager();
 
     // Combine all searchable items
     const allItems: SearchItem[] = [...apps, ...projects];
@@ -236,6 +236,33 @@ export default function TopMenuBar() {
                             ))}
                         </div>
                     )}
+                </div>
+
+                {/* Center - Open Windows */}
+                <div className="flex items-center gap-1">
+                    {windows.map((win) => {
+                        const appInfo = apps.find(a => a.component === win.component);
+                        const Icon = appInfo?.icon || Folder;
+                        const isActive = win.id === activeWindowId;
+
+                        return (
+                            <button
+                                key={win.id}
+                                onClick={() => focusWindow(win.id)}
+                                className={`flex items-center gap-1.5 px-2 py-1 rounded text-[12px] transition-all ${isActive
+                                        ? 'bg-white/15 text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white/90'
+                                    }`}
+                                title={win.title}
+                            >
+                                <Icon className="w-3.5 h-3.5" />
+                                <span className="max-w-[80px] truncate">{win.title}</span>
+                                {win.isMinimized && (
+                                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
+                                )}
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* Right Side - Search and DateTime */}
@@ -424,7 +451,7 @@ export default function TopMenuBar() {
 
                             {/* Site Name */}
                             <h2 className="text-2xl font-bold text-white mb-1">
-                                hritik.dev
+                                Hritik Raj
                             </h2>
                             <p className="text-white/50 mb-6 text-sm">
                                 macOS-inspired portfolio experience
