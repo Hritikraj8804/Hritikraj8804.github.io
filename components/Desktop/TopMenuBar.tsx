@@ -177,10 +177,48 @@ export default function TopMenuBar() {
         window.location.reload();
     };
 
+
+    const { updateWindow } = useWindowManager();
+
+    const handleTileWindows = () => {
+        // Filter out minimized windows if you want to tile only visible ones,
+        // but typically tiling affects all open windows or restores them.
+        const visibleWindows = windows.filter(w => !w.isMinimized);
+        const count = visibleWindows.length;
+        if (count === 0) return;
+
+        // Calculate grid dimensions
+        const cols = Math.ceil(Math.sqrt(count));
+        const rows = Math.ceil(count / cols);
+
+        // Available screen area (subtract top bar height)
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight - 28; // 28px top bar
+
+        const width = screenWidth / cols;
+        const height = screenHeight / rows;
+
+        visibleWindows.forEach((win, index) => {
+            const row = Math.floor(index / cols);
+            const col = index % cols;
+
+            const newX = col * width;
+            const newY = 28 + (row * height); // Start below top bar
+
+            updateWindow(win.id, {
+                position: { x: newX, y: newY },
+                size: { width, height },
+                isMaximized: false // Should unmaximize to tile
+            });
+        });
+
+        setIsMenuOpen(false);
+    };
+
     const menuItems = [
         { label: 'About This Site', action: handleAboutThisSite },
         { label: 'Close All Windows', action: handleCloseAllWindows },
-        { label: 'Tile Windows', action: () => setIsMenuOpen(false) },
+        { label: 'Tile Windows', action: handleTileWindows },
         { divider: true },
         { label: 'Refresh', action: handleRefresh },
     ];
