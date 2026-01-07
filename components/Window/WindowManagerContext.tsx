@@ -25,8 +25,12 @@ export function WindowManagerProvider({ children }: WindowManagerProviderProps) 
     const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
 
     const openWindow = useCallback((config: Omit<WindowState, 'id' | 'zIndex' | 'isMinimized' | 'isMaximized'>) => {
-        // Check if window with same component is already open
-        const existingWindow = windows.find(w => w.component === config.component);
+        // Check if window with same component is already open (unless it's a project detail)
+        const isProjectDetail = config.component === 'project-details';
+        const existingWindow = !isProjectDetail
+            ? windows.find(w => w.component === config.component)
+            : null;
+
         if (existingWindow) {
             // Focus the existing window instead
             focusWindow(existingWindow.id);
@@ -34,6 +38,7 @@ export function WindowManagerProvider({ children }: WindowManagerProviderProps) 
         }
 
         const id = `window-${++windowIdCounter}`;
+        // Ensure new window is always on top
         const zIndex = ++zIndexCounter;
 
         // Calculate staggered position
