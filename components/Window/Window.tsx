@@ -94,7 +94,7 @@ export default function Window({ window: windowState, children }: WindowProps) {
     if (windowState.isMinimized) return null;
 
     const windowStyle = windowState.isMaximized
-        ? { left: 0, top: 0, width: '100%', height: 'calc(100vh - 70px)' }
+        ? { left: 0, top: 28, width: '100%', height: 'calc(100vh - 28px)' }
         : {
             left: windowState.position.x,
             top: windowState.position.y,
