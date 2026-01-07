@@ -36,10 +36,21 @@ export function WindowManagerProvider({ children }: WindowManagerProviderProps) 
         const id = `window-${++windowIdCounter}`;
         const zIndex = ++zIndexCounter;
 
+        // Calculate staggered position
+        let position = config.position;
+        if (config.component !== 'aboutsite' && position) {
+            const offset = windows.length * 30;
+            position = {
+                x: position.x + offset,
+                y: position.y + offset
+            };
+        }
+
         const newWindow: WindowState = {
             ...config,
             id,
             zIndex,
+            position: position || { x: 100, y: 100 },
             isMinimized: false,
             isMaximized: false,
         };

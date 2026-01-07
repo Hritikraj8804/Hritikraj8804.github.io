@@ -15,11 +15,11 @@ const desktopApps = [
 ];
 
 const defaultWindowConfigs: Record<string, { width: number; height: number; x: number; y: number }> = {
-    terminal: { width: 700, height: 450, x: 100, y: 80 },
-    projects: { width: 800, height: 500, x: 150, y: 100 },
-    about: { width: 600, height: 450, x: 200, y: 120 },
-    contact: { width: 500, height: 400, x: 250, y: 140 },
-    resume: { width: 700, height: 500, x: 180, y: 100 },
+    terminal: { width: 900, height: 600, x: 100, y: 80 },
+    projects: { width: 1000, height: 650, x: 150, y: 100 },
+    about: { width: 800, height: 600, x: 200, y: 120 },
+    contact: { width: 700, height: 550, x: 250, y: 140 },
+    resume: { width: 900, height: 750, x: 180, y: 100 },
 };
 
 export default function Desktop() {
