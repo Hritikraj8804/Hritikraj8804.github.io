@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Apple, Search, Folder, User, Terminal, Mail, FileText, ExternalLink } from 'lucide-react';
+import { Apple, Search, Folder, User, Terminal, Mail, FileText, ExternalLink, BookOpen } from 'lucide-react';
 import { useWindowManager } from '@/components/Window/WindowManagerContext';
 
 // Apps
 const apps = [
     { id: 'about', title: 'About Me', category: 'app', icon: User, component: 'about' },
     { id: 'projects', title: 'Projects', category: 'app', icon: Folder, component: 'projects' },
+    { id: 'blog', title: 'Blog', category: 'app', icon: BookOpen, component: 'blog' },
     { id: 'terminal', title: 'Terminal', category: 'app', icon: Terminal, component: 'terminal' },
-    { id: 'contact', title: 'Contact', category: 'app', icon: Mail, component: 'contact' },
     { id: 'resume', title: 'Resume', category: 'app', icon: FileText, component: 'resume' },
 ];
 

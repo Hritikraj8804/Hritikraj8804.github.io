@@ -12,6 +12,7 @@ import About from '@/components/Apps/About';
 import Contact from '@/components/Apps/Contact';
 import Resume from '@/components/Apps/Resume';
 import AboutSite from '@/components/Apps/AboutSite';
+import Blog from '@/components/Apps/Blog';
 
 const appComponents: Record<string, React.ComponentType> = {
   terminal: Terminal,
@@ -20,6 +21,7 @@ const appComponents: Record<string, React.ComponentType> = {
   contact: Contact,
   resume: Resume,
   aboutsite: AboutSite,
+  blog: Blog,
 };
 
 function WindowManager() {

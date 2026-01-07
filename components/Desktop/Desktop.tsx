@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, FolderOpen, User, Mail, FileText } from 'lucide-react';
+import { Terminal, FolderOpen, User, Mail, FileText, BookOpen } from 'lucide-react';
 import DesktopIcon from './DesktopIcon';
 import { useWindowManager } from '../Window/WindowManagerContext';
 
@@ -10,7 +10,7 @@ const desktopApps = [
     { id: 'terminal', name: 'Terminal', icon: Terminal, component: 'terminal' },
     { id: 'projects', name: 'Projects', icon: FolderOpen, component: 'projects' },
     { id: 'about', name: 'About Me', icon: User, imageSrc: '/images/x.jpg', component: 'about' },
-    { id: 'contact', name: 'Contact', icon: Mail, component: 'contact' },
+    { id: 'blog', name: 'Blog', icon: BookOpen, component: 'blog' },
     { id: 'resume', name: 'Resume', icon: FileText, component: 'resume' },
 ];
 
@@ -18,6 +18,7 @@ const defaultWindowConfigs: Record<string, { width: number; height: number; x: n
     terminal: { width: 900, height: 600, x: 100, y: 80 },
     projects: { width: 1000, height: 650, x: 150, y: 100 },
     about: { width: 800, height: 600, x: 200, y: 120 },
+    blog: { width: 800, height: 600, x: 220, y: 100 },
     contact: { width: 700, height: 550, x: 250, y: 140 },
     resume: { width: 900, height: 750, x: 180, y: 100 },
 };
