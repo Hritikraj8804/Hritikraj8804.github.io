@@ -158,18 +158,16 @@ export default function Window({ window: windowState, children }: WindowProps) {
             </div>
 
             {/* Window Content */}
-            <div className="h-[calc(100%-40px)] overflow-auto bg-[#0a0a0a]">
+            <div className="h-[calc(100%-28px)] overflow-auto bg-[#0a0a0a]">
                 {children}
             </div>
 
             {/* Resize Handle */}
             {!windowState.isMaximized && (
                 <div
-                    className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize"
+                    className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize z-10"
                     onMouseDown={handleResizeStart}
-                >
-                    <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-white/30" />
-                </div>
+                />
             )}
         </motion.div>
     );
