@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Folder, ExternalLink } from 'lucide-react';
+import { Folder } from 'lucide-react';
 import { Project } from '@/lib/types';
 import { useWindowManager } from '../Window/WindowManagerContext';
 
@@ -80,22 +80,24 @@ export default function Projects() {
     return (
         <div className="h-full bg-[#f5f5f7] text-black overflow-y-auto">
             {/* Text Header (Sticky) */}
-            <div className="sticky top-0 z-20 bg-[#f5f5f7]/90 backdrop-blur-md px-6 py-3 border-b border-gray-200 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                    <Folder className="w-5 h-7 text-yellow-500 fill-yellow-500" />
-                    <h1 className="text-sm font-semibold text-gray-700">Projects</h1>
+            <div className="sticky top-0 z-20 bg-[#f5f5f7]/90 backdrop-blur-md border-b border-gray-200">
+                <div className="max-w-5xl mx-auto px-24 py-4 flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                        <Folder className="w-5 h-7 text-yellow-500 fill-yellow-500" />
+                        <h1 className="text-sm font-semibold text-gray-700">Projects</h1>
+                    </div>
+                    <span className="text-xs text-gray-500">{projects.length} projects</span>
                 </div>
-                <span className="text-xs text-gray-500">{projects.length} projects</span>
             </div>
 
-            <div className="p-8">
+            <div className="max-w-5xl mx-auto px-24 py-10">
                 {years.map((year, yearIndex) => (
                     <motion.div
                         key={year}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: yearIndex * 0.1 }}
-                        className="mb-10"
+                        className="mb-14"
                     >
                         <div className="mb-8">
                             <h2 className="text-3xl font-bold text-[#1d1d1f] mb-2">
@@ -119,17 +121,17 @@ export default function Projects() {
                                         })
                                     }}
                                     whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.1)" }}
-                                    className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group text-left w-full h-[140px]"
+                                    className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group text-left w-full h-[120px]"
                                 >
                                     {/* Icon & Month Column */}
-                                    <div className="flex-shrink-0 flex flex-col items-center gap-3 w-16">
+                                    <div className="flex-shrink-0 flex flex-col items-center gap-2 w-16">
                                         {/* Simple Blue Folder Icon */}
                                         <div className="w-14 h-11 bg-[#5aa5ea] rounded-md relative shadow-sm">
                                             <div className="absolute top-0 right-0 w-5 h-5 bg-white/20 rounded-bl-md" />
                                         </div>
 
                                         {/* Month Pill */}
-                                        <span className="bg-[#f0f0f2] text-[#6e6e73] text-[11px] font-medium px-2.5 py-1 rounded-full w-full text-center">
+                                        <span className="bg-[#f0f0f2] text-[#6e6e73] text-[11px] font-medium px-2.5 py-1 rounded">
                                             {project.month}
                                         </span>
                                     </div>
@@ -141,8 +143,10 @@ export default function Projects() {
                                                 {project.title}
                                             </h3>
                                         </div>
-                                        <p className="text-[13px] text-[#86868b] leading-relaxed line-clamp-3">
-                                            {project.description}
+                                        <p className="text-[13px] text-[#86868b] leading-relaxed">
+                                            {project.description.length > 35
+                                                ? `${project.description.substring(0, 35)}...`
+                                                : project.description}
                                         </p>
                                     </div>
                                 </motion.button>
