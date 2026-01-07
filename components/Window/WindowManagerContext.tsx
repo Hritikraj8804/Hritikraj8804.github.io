@@ -25,11 +25,15 @@ export function WindowManagerProvider({ children }: WindowManagerProviderProps) 
     const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
 
     const openWindow = useCallback((config: Omit<WindowState, 'id' | 'zIndex' | 'isMinimized' | 'isMaximized'>) => {
-        // Check if window with same component is already open (unless it's a project detail)
+        // Check if window with same component is already open
+        // For project-details, we also check if the title matches (assuming title is unique per project)
         const isProjectDetail = config.component === 'project-details';
-        const existingWindow = !isProjectDetail
-            ? windows.find(w => w.component === config.component)
-            : null;
+        const existingWindow = windows.find(w => {
+            if (isProjectDetail) {
+                return w.component === config.component && w.title === config.title;
+            }
+            return w.component === config.component;
+        });
 
         if (existingWindow) {
             // Focus the existing window instead
