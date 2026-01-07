@@ -1,0 +1,28 @@
+{
+  "projects": [
+    {
+      "title": "ml-sandbox",
+      "description": "",
+      "tags": [],
+      "link": "https://github.com/Hritikraj8804/ml-sandbox",
+      "year": 2024,
+      "month": "Dec",
+      "status": null,
+      "slug": "ml-sandbox"
+    },
+    {
+      "title": "BugBuster",
+      "description": "A beginner-friendly tool that helps new contributors find open-source issues they can easily tackle.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "link": "https://github.com/Hritikraj8804/BugBuster",
+      "year": 2024,
+      "month": "Nov",
+      "status": "NEW",
+      "slug": "bugbuster"
+    }
+  ]
+}
