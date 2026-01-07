@@ -38,6 +38,7 @@ export interface Project {
     year: number;
     month: string;
     status?: 'NEW' | 'FEATURED';
+    slug?: string;  // Maps to /public/projects/{slug}.md
 }
 
 export interface RecentActivity {

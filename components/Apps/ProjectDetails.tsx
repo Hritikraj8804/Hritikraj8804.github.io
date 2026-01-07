@@ -1,264 +1,213 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Github, ExternalLink, Calendar, Layers, Code, ArrowUpRight, Star, Eye, GitFork } from 'lucide-react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Loader2, Calendar, Link as LinkIcon, Github } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Project } from '@/lib/types';
+import { motion } from 'framer-motion';
 
 interface ProjectDetailsProps {
     project: Project;
 }
 
 export default function ProjectDetails({ project }: ProjectDetailsProps) {
-    if (!project) return <div className="h-full flex items-center justify-center text-gray-400">Project not found</div>;
+    const [markdown, setMarkdown] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (project?.slug) {
+            setIsLoading(true);
+            fetch(`/projects/${project.slug}.md`)
+                .then(res => res.ok ? res.text() : null)
+                .then(content => {
+                    let cleanContent = content;
+                    if (content) {
+                        cleanContent = content.replace(/^---[\s\S]*?---\n*/m, '');
+                        cleanContent = cleanContent.replace(/^\+\+\+[\s\S]*?\+\+\+\n*/m, '');
+                    }
+                    setMarkdown(cleanContent);
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setMarkdown(null);
+                    setIsLoading(false);
+                });
+        } else {
+            setIsLoading(false);
+        }
+    }, [project?.slug]);
+
+    if (!project) {
+        return (
+            <div className="h-full flex items-center justify-center text-gray-400 bg-white">
+                Project not found
+            </div>
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <div className="h-full flex items-center justify-center bg-white">
+                <div className="flex items-center gap-3 text-gray-500">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="h-full bg-[#0a0a0a] text-white overflow-y-auto scroll-smooth">
-
-            {/* Hero Section - Minimal & Clean */}
-            <div className="relative min-h-[320px] flex items-end overflow-hidden">
-                {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-cyan-500/10" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent" />
-
-                {/* Grid Pattern Overlay */}
-                <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                    }}
-                />
-
-                <div className="relative z-10 w-full max-w-5xl mx-auto px-8 pb-12 pt-20">
+        <div className="h-full bg-white overflow-y-auto text-gray-800 font-sans">
+            {/* Header Section */}
+            <div className="bg-gray-50 border-b border-gray-200 py-10 px-8">
+                <div className="max-w-3xl mx-auto">
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="space-y-4"
                     >
-                        {/* Status Badge */}
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-medium px-3 py-1.5 rounded-full border border-emerald-500/20">
-                                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                                {project.status || 'Completed'}
+                        <div className="flex items-center gap-3 text-sm text-gray-500 mb-2">
+                            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium text-xs uppercase tracking-wider">
+                                {project.year}
                             </span>
-                            <span className="text-zinc-500 text-sm font-medium">
-                                {project.month} {project.year}
+                            <span className="flex items-center gap-1">
+                                <Calendar size={14} />
+                                {project.month}
                             </span>
                         </div>
 
-                        {/* Title */}
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+                        <h1 className="text-4xl font-bold text-gray-900 tracking-tight leading-tight">
                             {project.title}
                         </h1>
 
-                        {/* Short Description */}
-                        <p className="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
+                        <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                             {project.description}
                         </p>
-                    </motion.div>
-                </div>
-            </div>
 
-            {/* Quick Stats Bar */}
-            <div className="border-y border-zinc-800/50 bg-zinc-900/30 backdrop-blur-sm">
-                <div className="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-2 text-zinc-400">
-                            <Star size={16} className="text-yellow-500" />
-                            <span className="text-sm font-medium">Featured</span>
+                        <div className="flex flex-wrap gap-2 pt-2">
+                            {project.tags.map(tag => (
+                                <span key={tag} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
-                        <div className="flex items-center gap-2 text-zinc-400">
-                            <Eye size={16} />
-                            <span className="text-sm font-medium">1.2k views</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-zinc-400">
-                            <GitFork size={16} />
-                            <span className="text-sm font-medium">Open Source</span>
-                        </div>
-                    </div>
 
-                    {/* Tech Tags Inline */}
-                    <div className="flex items-center gap-2">
-                        {project.tags?.slice(0, 3).map(tag => (
-                            <span
-                                key={tag}
-                                className="px-3 py-1 bg-zinc-800 text-zinc-300 text-xs font-medium rounded-full border border-zinc-700"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="max-w-5xl mx-auto px-8 py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-
-                    {/* Left Column - Main Content */}
-                    <div className="lg:col-span-2 space-y-16">
-
-                        {/* Project Preview */}
-                        <motion.section
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 relative group">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="text-center space-y-4">
-                                        <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto backdrop-blur-sm border border-white/10">
-                                            <ArrowUpRight size={28} className="text-white" />
-                                        </div>
-                                        <p className="text-zinc-400 text-sm">Preview not available</p>
-                                    </div>
-                                </div>
+                        <div className="flex gap-4 pt-4">
+                            {project.link && (
                                 <a
                                     href={project.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100"
+                                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors font-medium border border-gray-300 px-4 py-2 rounded-lg hover:border-blue-400 hover:bg-blue-50"
                                 >
-                                    <span className="px-6 py-3 bg-white text-black font-semibold rounded-full transform scale-90 group-hover:scale-100 transition-transform">
-                                        View Live Demo
-                                    </span>
+                                    <Github size={18} />
+                                    <span>View Source</span>
                                 </a>
-                            </div>
-                        </motion.section>
-
-                        {/* About Section */}
-                        <motion.section
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                                <span className="w-1 h-6 bg-violet-500 rounded-full" />
-                                About This Project
-                            </h2>
-                            <div className="prose prose-invert prose-zinc max-w-none">
-                                <p className="text-zinc-400 leading-relaxed text-lg">
-                                    {project.description}
-                                </p>
-                                <p className="text-zinc-400 leading-relaxed">
-                                    This project was built to solve real-world problems while exploring modern development practices.
-                                    It showcases clean architecture, responsive design, and attention to user experience.
-                                </p>
-                            </div>
-                        </motion.section>
-
-                        {/* Key Features */}
-                        <motion.section
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                        >
-                            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                                <span className="w-1 h-6 bg-cyan-500 rounded-full" />
-                                Key Features
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {['Modern UI/UX Design', 'Responsive Layout', 'Performance Optimized', 'Clean Codebase'].map((feature, i) => (
-                                    <div
-                                        key={i}
-                                        className="p-4 bg-zinc-900/50 rounded-xl border border-zinc-800 flex items-start gap-3"
-                                    >
-                                        <div className="w-8 h-8 bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <span className="text-violet-400 text-sm font-bold">{i + 1}</span>
-                                        </div>
-                                        <span className="text-zinc-300 font-medium">{feature}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.section>
-
-                    </div>
-
-                    {/* Right Column - Sidebar */}
-                    <div className="space-y-6">
-
-                        {/* Action Card */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800 space-y-4 sticky top-8"
-                        >
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full bg-white text-black px-6 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-zinc-100 transition-all shadow-lg shadow-white/5 hover:shadow-white/10"
-                            >
-                                <ExternalLink size={18} />
-                                Visit Project
-                            </a>
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full bg-zinc-800 text-white px-6 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-zinc-700 transition-colors border border-zinc-700"
-                            >
-                                <Github size={18} />
-                                View Source
-                            </a>
-                        </motion.div>
-
-                        {/* Project Info Card */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800 space-y-6"
-                        >
-                            {/* Tech Stack */}
-                            {project.tags && project.tags.length > 0 && (
-                                <div>
-                                    <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                        <Layers size={14} />
-                                        Tech Stack
-                                    </h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {project.tags.map(tag => (
-                                            <span
-                                                key={tag}
-                                                className="px-3 py-1.5 bg-zinc-800 text-zinc-300 text-sm font-medium rounded-lg border border-zinc-700"
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
                             )}
-
-                            <div className="h-px bg-zinc-800" />
-
-                            {/* Timeline */}
-                            <div>
-                                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                    <Calendar size={14} />
-                                    Timeline
-                                </h3>
-                                <p className="text-zinc-300 font-medium">{project.month} {project.year}</p>
-                            </div>
-
-                            <div className="h-px bg-zinc-800" />
-
-                            {/* Role */}
-                            <div>
-                                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                    <Code size={14} />
-                                    Role
-                                </h3>
-                                <p className="text-zinc-300 font-medium">Full Stack Developer</p>
-                            </div>
-                        </motion.div>
-
-                    </div>
+                            <a
+                                href={project.link} // fallback if separate demo link isn't in generic project type yet, or use link for both
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 bg-gray-900 text-white hover:bg-black transition-colors px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow"
+                            >
+                                <LinkIcon size={18} />
+                                <span>Visit Project</span>
+                            </a>
+                        </div>
+                    </motion.div>
                 </div>
             </div>
 
-            {/* Bottom Spacer */}
-            <div className="h-24" />
+            {/* Markdown Content */}
+            <article className="max-w-3xl mx-auto px-8 py-12 prose prose-lg prose-gray
+                
+                // Headings
+                prose-headings:font-bold prose-headings:text-gray-900 prose-headings:tracking-tight
+                prose-h1:text-3xl prose-h1:mb-8
+                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-100
+                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
+
+                // Text
+                prose-p:text-gray-700 prose-p:leading-8 prose-p:my-6
+                prose-strong:text-gray-900 prose-strong:font-bold
+                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-gray-700
+                
+                // Links
+                prose-a:text-blue-600 prose-a:no-underline prose-a:border-b prose-a:border-blue-200 hover:prose-a:border-blue-600 hover:prose-a:text-blue-700 transition-colors
+
+                // Lists
+                prose-ul:my-6 prose-li:my-2 prose-li:text-gray-700
+                
+                // Code
+                prose-code:bg-gray-100 prose-code:text-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-[0.9em] prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0
+
+                // Images
+                prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-gray-100 prose-img:my-8
+
+                // Tables
+                prose-table:border prose-table:border-gray-200 prose-table:rounded-lg prose-table:overflow-hidden
+                prose-th:bg-gray-50 prose-th:p-4 prose-th:text-gray-900
+                prose-td:p-4 prose-td:border-t prose-td:border-gray-100
+            ">
+                {markdown ? (
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            // Custom code block renderer with syntax highlighting
+                            code({ node, inline, className, children, ...props }) {
+                                const match = /language-(\w+)/.exec(className || '');
+                                return !inline && match ? (
+                                    <div className="rounded-xl overflow-hidden shadow-sm my-8 border border-gray-200">
+                                        <div className="bg-[#1e1e1e] px-4 py-2 flex items-center gap-2 border-b border-gray-700/50">
+                                            <div className="flex gap-1.5">
+                                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                                                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                                            </div>
+                                            <span className="text-xs text-gray-400 font-mono ml-2 uppercase">
+                                                {match[1]}
+                                            </span>
+                                        </div>
+                                        <SyntaxHighlighter
+                                            style={vscDarkPlus}
+                                            language={match[1]}
+                                            PreTag="div"
+                                            customStyle={{ margin: 0, borderRadius: 0 }}
+                                            {...props}
+                                        >
+                                            {String(children).replace(/\n$/, '')}
+                                        </SyntaxHighlighter>
+                                    </div>
+                                ) : (
+                                    <code className={className} {...props}>
+                                        {children}
+                                    </code>
+                                );
+                            },
+                            // Custom components for custom shortcodes from Hugo (e.g. {{< youtube >}})
+                            // Since we're raw rendering, we might see text like {{< youtube ... >}}
+                            // We can't easily parse Hugo shortcodes in client-side react-markdown without a custom plugin
+                            // But we can try to style them if they appear as text, or just accept that strict Hugo shortcodes won't render.
+                            // However, standard MD images will render fine.
+                        }}
+                    >
+                        {markdown}
+                    </ReactMarkdown>
+                ) : (
+                    <div className="text-center py-20 text-gray-500">
+                        Content loading or not available...
+                    </div>
+                )}
+            </article>
+
+            {/* Footer */}
+            <div className="border-t border-gray-200 py-10 text-center text-gray-400 text-sm">
+                Thanks for viewing {project.title}!
+            </div>
         </div>
     );
 }
-
