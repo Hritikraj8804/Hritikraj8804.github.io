@@ -82,7 +82,7 @@ export default function Projects() {
             {/* Text Header (Sticky) */}
             <div className="sticky top-0 z-20 bg-[#f5f5f7]/90 backdrop-blur-md px-6 py-3 border-b border-gray-200 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                    <Folder className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                    <Folder className="w-5 h-7 text-yellow-500 fill-yellow-500" />
                     <h1 className="text-sm font-semibold text-gray-700">Projects</h1>
                 </div>
                 <span className="text-xs text-gray-500">{projects.length} projects</span>
@@ -97,11 +97,14 @@ export default function Projects() {
                         transition={{ delay: yearIndex * 0.1 }}
                         className="mb-10"
                     >
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b border-gray-300 pb-2">
-                            {year}
-                        </h2>
+                        <div className="mb-8">
+                            <h2 className="text-3xl font-bold text-[#1d1d1f] mb-2">
+                                {year}
+                            </h2>
+                            <div className="h-[2px] w-full bg-[#6db3f2]/30" />
+                        </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                             {projectsByYear[year].map((project, index) => (
                                 <motion.button
                                     key={project.title}
@@ -115,37 +118,33 @@ export default function Projects() {
                                             props: { project }
                                         })
                                     }}
-                                    whileHover={{ scale: 1.02 }}
-                                    className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md transition-all flex items-start gap-4 group text-left w-full"
+                                    whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.1)" }}
+                                    className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group text-left w-full h-[140px]"
                                 >
-                                    {/* Icon */}
-                                    <div className="flex-shrink-0 flex flex-col items-center gap-1">
-                                        <div className="w-12 h-10 bg-blue-500 rounded-md flex items-center justify-center shadow-sm group-hover:bg-blue-600 transition-colors relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 w-4 h-4 bg-white/20 rounded-bl-md" />
+                                    {/* Icon & Month Column */}
+                                    <div className="flex-shrink-0 flex flex-col items-center gap-3 w-16">
+                                        {/* Simple Blue Folder Icon */}
+                                        <div className="w-14 h-11 bg-[#5aa5ea] rounded-md relative shadow-sm">
+                                            <div className="absolute top-0 right-0 w-5 h-5 bg-white/20 rounded-bl-md" />
                                         </div>
-                                        <span className="text-[10px] uppercase font-bold text-gray-400 bg-gray-100 px-1.5 rounded-full">
+
+                                        {/* Month Pill */}
+                                        <span className="bg-[#f0f0f2] text-[#6e6e73] text-[11px] font-medium px-2.5 py-1 rounded-full w-full text-center">
                                             {project.month}
                                         </span>
                                     </div>
 
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <h3 className="font-semibold text-gray-900 truncate">
+                                    {/* Content */}
+                                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                        <div className="flex justify-between items-start">
+                                            <h3 className="font-bold text-[#1d1d1f] text-base leading-tight mb-1 truncate pr-2">
                                                 {project.title}
                                             </h3>
                                         </div>
-                                        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-2">
+                                        <p className="text-[13px] text-[#86868b] leading-relaxed line-clamp-3">
                                             {project.description}
                                         </p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {project.tags.slice(0, 2).map(tag => (
-                                                <span key={tag} className="text-[10px] text-gray-400">
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                        </div>
                                     </div>
-                                    <ExternalLink className="w-3 h-3 text-gray-300 group-hover:text-gray-500 transition-colors" />
                                 </motion.button>
                             ))}
                         </div>
