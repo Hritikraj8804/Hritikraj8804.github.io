@@ -12,14 +12,18 @@ import About from '@/components/Apps/About';
 import Contact from '@/components/Apps/Contact';
 import Resume from '@/components/Apps/Resume';
 import AboutSite from '@/components/Apps/AboutSite';
+import Blog from '@/components/Apps/Blog';
+import ProjectDetails from '@/components/Apps/ProjectDetails';
 
-const appComponents: Record<string, React.ComponentType> = {
+const appComponents: Record<string, React.ComponentType<any>> = {
   terminal: Terminal,
   projects: Projects,
   about: About,
   contact: Contact,
   resume: Resume,
   aboutsite: AboutSite,
+  blog: Blog,
+  'project-details': ProjectDetails,
 };
 
 function WindowManager() {
@@ -33,7 +37,7 @@ function WindowManager() {
 
         return (
           <Window key={windowState.id} window={windowState}>
-            <AppComponent />
+            <AppComponent {...(windowState.props || {})} />
           </Window>
         );
       })}

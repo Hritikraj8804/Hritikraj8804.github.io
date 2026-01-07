@@ -9,6 +9,7 @@ export interface WindowState {
     isMinimized: boolean;
     isMaximized: boolean;
     zIndex: number;
+    props?: any;
 }
 
 export interface WindowManagerContextType {
@@ -34,6 +35,8 @@ export interface Project {
     description: string;
     tags: string[];
     link: string;
+    year: number;
+    month: string;
     status?: 'NEW' | 'FEATURED';
 }
 

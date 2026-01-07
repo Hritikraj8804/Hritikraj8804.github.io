@@ -1,113 +1,156 @@
-'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Star } from 'lucide-react';
+import { Folder } from 'lucide-react';
 import { Project } from '@/lib/types';
+import { useWindowManager } from '../Window/WindowManagerContext';
 
 const projects: Project[] = [
     {
-        title: 'Web Desktop Portfolio',
-        description: 'A macOS-inspired portfolio website with draggable windows, a functional terminal, and glassmorphism design.',
-        tags: ['Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'],
-        link: 'https://github.com/Hritikraj8804/Hritikraj8804.github.io',
+        title: 'MacPuppet',
+        description: 'A VTuber software for Mac using ARKit face tracking.',
+        tags: ['Swift', 'ARKit'],
+        link: 'https://github.com/Hritikraj8804',
+        year: 2023,
+        month: 'Sep',
         status: 'FEATURED',
     },
     {
-        title: 'Project Two',
-        description: 'A brief description of your second project. What it does and what technologies it uses.',
-        tags: ['React', 'Node.js', 'MongoDB'],
+        title: 'Lucky Knight',
+        description: 'GMTK Game Jam 2023 Entry: Play as "Luck" and manipulate probability.',
+        tags: ['Unity', 'C#'],
         link: 'https://github.com/Hritikraj8804',
+        year: 2023,
+        month: 'Jul',
     },
     {
-        title: 'Project Three',
-        description: 'A brief description of your third project. Showcase your best work here.',
-        tags: ['Python', 'FastAPI', 'PostgreSQL'],
+        title: 'GMTK Game Entry',
+        description: 'Theme was roll of a dice and I built a game where you shoot dice.',
+        tags: ['Unity', 'C#'],
         link: 'https://github.com/Hritikraj8804',
-        status: 'NEW',
+        year: 2022,
+        month: 'May',
     },
     {
-        title: 'Project Four',
-        description: 'Another amazing project you have worked on. Keep adding your projects here.',
-        tags: ['TypeScript', 'Vue.js', 'Supabase'],
+        title: 'Unity NFT Market',
+        description: 'Prototype of how NFTs can be used to create a marketplace for games.',
+        tags: ['Unity', 'Blockchain'],
         link: 'https://github.com/Hritikraj8804',
+        year: 2022,
+        month: 'Apr',
+    },
+    {
+        title: 'Desonity',
+        description: 'A comprehensive Unity SDK for the DeSo Blockchain, enabling login and transactions.',
+        tags: ['Unity', 'C#', 'DeSo'],
+        link: 'https://github.com/Hritikraj8804',
+        year: 2022,
+        month: 'Mar',
+    },
+    {
+        title: 'Cordify',
+        description: 'A bridge between Web2 social platforms and the DeSo blockchain.',
+        tags: ['React', 'Node.js'],
+        link: 'https://github.com/Hritikraj8804',
+        year: 2021,
+        month: 'Dec',
+    },
+    {
+        title: 'Animedoro Timer',
+        description: 'A simple pomodoro timer for anime lovers, built in Vanilla JS.',
+        tags: ['JavaScript', 'HTML/CSS'],
+        link: 'https://github.com/Hritikraj8804',
+        year: 2021,
+        month: 'Aug',
     },
 ];
 
 export default function Projects() {
+    const { openWindow } = useWindowManager();
+    // Group projects by year
+    const projectsByYear = projects.reduce((acc, project) => {
+        if (!acc[project.year]) {
+            acc[project.year] = [];
+        }
+        acc[project.year].push(project);
+        return acc;
+    }, {} as Record<number, Project[]>);
+
+    const years = Object.keys(projectsByYear).map(Number).sort((a, b) => b - a);
+
     return (
-        <div className="h-full bg-[#0a0a0a] p-6 overflow-auto">
-            {/* Header */}
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold text-white mb-2">My Projects</h2>
-                <p className="text-sm text-white/60">
-                    A collection of projects I&apos;ve worked on. Click the links to view on GitHub.
-                </p>
+        <div className="h-full bg-[#f5f5f7] text-black overflow-y-auto">
+            {/* Text Header (Sticky) */}
+            <div className="sticky top-0 z-20 bg-[#f5f5f7]/90 backdrop-blur-md border-b border-gray-200">
+                <div className="max-w-5xl mx-auto px-24 py-4 flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                        <Folder className="w-5 h-7 text-yellow-500 fill-yellow-500" />
+                        <h1 className="text-sm font-semibold text-gray-700">Projects</h1>
+                    </div>
+                    <span className="text-xs text-gray-500">{projects.length} projects</span>
+                </div>
             </div>
 
-            {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.map((project, index) => (
+            <div className="max-w-5xl mx-auto px-24 py-10">
+                {years.map((year, yearIndex) => (
                     <motion.div
-                        key={project.title}
+                        key={year}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="group relative bg-white/5 rounded-xl p-5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all"
+                        transition={{ delay: yearIndex * 0.1 }}
+                        className="mb-14"
                     >
-                        {/* Status Badge */}
-                        {project.status && (
-                            <div className={`absolute top-4 right-4 px-2 py-0.5 rounded text-xs font-medium ${project.status === 'FEATURED'
-                                    ? 'bg-yellow-500/20 text-yellow-400'
-                                    : 'bg-green-500/20 text-green-400'
-                                }`}>
-                                {project.status === 'FEATURED' && <Star className="w-3 h-3 inline mr-1" />}
-                                {project.status}
-                            </div>
-                        )}
-
-                        {/* Title */}
-                        <h3 className="text-lg font-semibold text-white mb-2 pr-20">
-                            {project.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-sm text-white/60 mb-4 line-clamp-2">
-                            {project.description}
-                        </p>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            {project.tags.map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="px-2 py-1 text-xs rounded-md bg-white/10 text-white/70"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
+                        <div className="mb-8">
+                            <h2 className="text-3xl font-bold text-[#1d1d1f] mb-2">
+                                {year}
+                            </h2>
+                            <div className="h-[2px] w-full bg-[#6db3f2]/30" />
                         </div>
 
-                        {/* Links */}
-                        <div className="flex gap-3">
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors"
-                            >
-                                <Github className="w-4 h-4" />
-                                <span>Source</span>
-                            </a>
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors"
-                            >
-                                <ExternalLink className="w-4 h-4" />
-                                <span>Live Demo</span>
-                            </a>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                            {projectsByYear[year].map((project, index) => (
+                                <motion.button
+                                    key={project.title}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openWindow({
+                                            component: 'project-details',
+                                            title: project.title,
+                                            size: { width: 800, height: 600 },
+                                            position: { x: 150, y: 100 },
+                                            props: { project }
+                                        })
+                                    }}
+                                    whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.1)" }}
+                                    className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group text-left w-full h-[120px]"
+                                >
+                                    {/* Icon & Month Column */}
+                                    <div className="flex-shrink-0 flex flex-col items-center gap-2 w-16">
+                                        {/* Simple Blue Folder Icon */}
+                                        <div className="w-14 h-11 bg-[#5aa5ea] rounded-md relative shadow-sm">
+                                            <div className="absolute top-0 right-0 w-5 h-5 bg-white/20 rounded-bl-md" />
+                                        </div>
+
+                                        {/* Month Pill */}
+                                        <span className="bg-[#f0f0f2] text-[#6e6e73] text-[11px] font-medium px-2.5 py-1 rounded">
+                                            {project.month}
+                                        </span>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                        <div className="flex justify-between items-start">
+                                            <h3 className="font-bold text-[#1d1d1f] text-base leading-tight mb-1 truncate pr-2">
+                                                {project.title}
+                                            </h3>
+                                        </div>
+                                        <p className="text-[13px] text-[#86868b] leading-relaxed">
+                                            {project.description.length > 35
+                                                ? `${project.description.substring(0, 35)}...`
+                                                : project.description}
+                                        </p>
+                                    </div>
+                                </motion.button>
+                            ))}
                         </div>
                     </motion.div>
                 ))}
