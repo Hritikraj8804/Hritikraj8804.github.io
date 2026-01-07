@@ -1,0 +1,446 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Apple, Search, Folder, User, Terminal, Mail, FileText, ExternalLink } from 'lucide-react';
+import { useWindowManager } from '@/components/Window/WindowManagerContext';
+
+// Apps
+const apps = [
+    { id: 'about', title: 'About Me', category: 'app', icon: User, component: 'about' },
+    { id: 'projects', title: 'Projects', category: 'app', icon: Folder, component: 'projects' },
+    { id: 'terminal', title: 'Terminal', category: 'app', icon: Terminal, component: 'terminal' },
+    { id: 'contact', title: 'Contact', category: 'app', icon: Mail, component: 'contact' },
+    { id: 'resume', title: 'Resume', category: 'app', icon: FileText, component: 'resume' },
+];
+
+// Projects (from your Projects.tsx)
+const projects = [
+    {
+        id: 'web-desktop',
+        title: 'Web Desktop Portfolio',
+        category: 'projects',
+        tags: ['Next.js', 'TypeScript', 'Tailwind'],
+        link: 'https://github.com/Hritikraj8804/Hritikraj8804.github.io'
+    },
+    {
+        id: 'project-two',
+        title: 'Project Two',
+        category: 'projects',
+        tags: ['React', 'Node.js', 'MongoDB'],
+        link: 'https://github.com/Hritikraj8804'
+    },
+    {
+        id: 'project-three',
+        title: 'Project Three',
+        category: 'projects',
+        tags: ['Python', 'FastAPI', 'PostgreSQL'],
+        link: 'https://github.com/Hritikraj8804'
+    },
+    {
+        id: 'project-four',
+        title: 'Project Four',
+        category: 'projects',
+        tags: ['TypeScript', 'Vue.js', 'Supabase'],
+        link: 'https://github.com/Hritikraj8804'
+    },
+];
+
+type SearchItem = {
+    id: string;
+    title: string;
+    category: string;
+    icon?: React.ComponentType<{ className?: string }>;
+    component?: string;
+    tags?: string[];
+    link?: string;
+};
+
+export default function TopMenuBar() {
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    const { windows, closeWindow, openWindow, focusWindow, activeWindowId } = useWindowManager();
+
+    // Combine all searchable items
+    const allItems: SearchItem[] = [...apps, ...projects];
+
+    // Filter results based on search query
+    const filteredItems = searchQuery.trim()
+        ? allItems.filter(item =>
+            item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
+        )
+        : [];
+
+    // Group filtered items by category
+    const groupedResults = {
+        app: filteredItems.filter(item => item.category === 'app'),
+        projects: filteredItems.filter(item => item.category === 'projects'),
+    };
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setIsMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (isSearchOpen && searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, [isSearchOpen]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!isSearchOpen) return;
+
+            if (e.key === 'Escape') {
+                setIsSearchOpen(false);
+                setSearchQuery('');
+                setSelectedIndex(0);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setSelectedIndex(prev => Math.min(prev + 1, filteredItems.length - 1));
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setSelectedIndex(prev => Math.max(prev - 1, 0));
+            } else if (e.key === 'Enter' && filteredItems.length > 0) {
+                e.preventDefault();
+                handleSelectItem(filteredItems[selectedIndex]);
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isSearchOpen, filteredItems, selectedIndex]);
+
+    useEffect(() => {
+        setSelectedIndex(0);
+    }, [searchQuery]);
+
+    const formatDateTime = (date: Date) => {
+        const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+        const monthDay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        return `${day}, ${monthDay}, ${time}`;
+    };
+
+    const handleSelectItem = (item: SearchItem) => {
+        if (item.component) {
+            // It's an app - open window
+            openWindow({
+                title: item.title,
+                component: item.component,
+                position: { x: 150 + Math.random() * 100, y: 80 + Math.random() * 50 },
+                size: { width: 700, height: 500 }
+            });
+        } else if (item.link) {
+            // It's a project - open link
+            window.open(item.link, '_blank');
+        }
+        setIsSearchOpen(false);
+        setSearchQuery('');
+    };
+
+    const handleCloseAllWindows = () => {
+        windows.forEach(w => closeWindow(w.id));
+        setIsMenuOpen(false);
+    };
+
+    const handleAboutThisSite = () => {
+        openWindow({
+            title: 'About This Site',
+            component: 'aboutsite',
+            position: { x: 300, y: 150 },
+            size: { width: 400, height: 480 }
+        });
+        setIsMenuOpen(false);
+    };
+
+    const handleRefresh = () => {
+        window.location.reload();
+    };
+
+
+    const { updateWindow } = useWindowManager();
+
+    const handleTileWindows = () => {
+        // Filter out minimized windows if you want to tile only visible ones,
+        // but typically tiling affects all open windows or restores them.
+        const visibleWindows = windows.filter(w => !w.isMinimized);
+        const count = visibleWindows.length;
+        if (count === 0) return;
+
+        // Calculate grid dimensions
+        const cols = Math.ceil(Math.sqrt(count));
+        const rows = Math.ceil(count / cols);
+
+        // Available screen area (subtract top bar height)
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight - 28; // 28px top bar
+
+        const width = screenWidth / cols;
+        const height = screenHeight / rows;
+
+        visibleWindows.forEach((win, index) => {
+            const row = Math.floor(index / cols);
+            const col = index % cols;
+
+            const newX = col * width;
+            const newY = 28 + (row * height); // Start below top bar
+
+            updateWindow(win.id, {
+                position: { x: newX, y: newY },
+                size: { width, height },
+                isMaximized: false // Should unmaximize to tile
+            });
+        });
+
+        setIsMenuOpen(false);
+    };
+
+    const menuItems = [
+        { label: 'About This Site', action: handleAboutThisSite },
+        { label: 'Close All Windows', action: handleCloseAllWindows },
+        { label: 'Tile Windows', action: handleTileWindows },
+        { divider: true },
+        { label: 'Refresh', action: handleRefresh },
+    ];
+
+    // Get cumulative index for an item
+    const getCumulativeIndex = (category: 'app' | 'projects', indexInCategory: number): number => {
+        if (category === 'app') return indexInCategory;
+        return groupedResults.app.length + indexInCategory;
+    };
+
+    return (
+        <>
+            {/* Menu Bar */}
+            <div
+                className="h-7 flex items-center justify-between text-white text-[13px] font-medium select-none relative z-[9999]"
+                style={{
+                    background: 'rgba(30, 30, 30, 0.85)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    paddingLeft: '16px',
+                    paddingRight: '16px'
+                }}
+            >
+                {/* Left Side - Logo with Dropdown */}
+                <div className="flex items-center gap-4 relative" ref={menuRef}>
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="hover:opacity-70 transition-opacity p-1"
+                    >
+                        <Apple className="w-4 h-4" />
+                    </button>
+                    <span className="font-semibold">Finder</span>
+
+                    {/* Dropdown Menu */}
+                    {isMenuOpen && (
+                        <div
+                            className="absolute top-8 left-0 w-52 py-2 rounded-lg shadow-2xl"
+                            style={{
+                                background: 'rgba(40, 40, 40, 0.98)',
+                                backdropFilter: 'blur(30px)',
+                                border: '1px solid rgba(255,255,255,0.15)'
+                            }}
+                        >
+                            {menuItems.map((item, index) => (
+                                item.divider ? (
+                                    <div key={index} className="h-px bg-white/10 my-2 mx-3" />
+                                ) : (
+                                    <button
+                                        key={index}
+                                        onClick={item.action}
+                                        className="w-full px-4 py-2 text-left text-[13px] text-white/90 hover:bg-blue-500 hover:text-white transition-colors rounded-md mx-1"
+                                        style={{ width: 'calc(100% - 8px)' }}
+                                    >
+                                        {item.label}
+                                    </button>
+                                )
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Center - Open Windows */}
+                <div className="flex items-center gap-1">
+                    {windows.map((win) => {
+                        const appInfo = apps.find(a => a.component === win.component);
+                        const Icon = appInfo?.icon || Folder;
+                        const isActive = win.id === activeWindowId;
+
+                        return (
+                            <button
+                                key={win.id}
+                                onClick={() => focusWindow(win.id)}
+                                className={`flex items-center gap-1.5 px-2 py-1 rounded text-[12px] transition-all ${isActive
+                                    ? 'bg-white/15 text-white'
+                                    : 'text-white/60 hover:bg-white/10 hover:text-white/90'
+                                    }`}
+                                title={win.title}
+                            >
+                                <Icon className="w-3.5 h-3.5" />
+                                <span className="max-w-[80px] truncate">{win.title}</span>
+                                {win.isMinimized && (
+                                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Right Side - Search and DateTime */}
+                <div className="flex items-center gap-5">
+                    <button
+                        className="p-1 hover:bg-white/10 rounded transition-colors"
+                        onClick={() => setIsSearchOpen(true)}
+                    >
+                        <Search className="w-4 h-4 text-white/80" />
+                    </button>
+                    <span className="text-white/90">{formatDateTime(currentTime)}</span>
+                </div>
+            </div>
+
+            {/* Spotlight Search Overlay */}
+            {isSearchOpen && (
+                <div
+                    className="fixed inset-0 z-[10000] flex items-start justify-center"
+                    style={{
+                        background: 'rgba(0,0,0,0.4)',
+                        paddingTop: '100px'
+                    }}
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            setIsSearchOpen(false);
+                            setSearchQuery('');
+                        }
+                    }}
+                >
+                    <div
+                        className="w-[620px] rounded-xl overflow-hidden shadow-2xl"
+                        style={{
+                            background: 'rgba(35, 35, 38, 0.98)',
+                            backdropFilter: 'blur(50px)',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            boxShadow: '0 25px 80px rgba(0,0,0,0.6)'
+                        }}
+                    >
+                        {/* Search Input */}
+                        <div className="flex items-center gap-4 px-5 py-4">
+                            <Search className="w-6 h-6 text-white/40" />
+                            <input
+                                ref={searchInputRef}
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search..."
+                                className="flex-1 bg-transparent text-white text-xl font-light outline-none placeholder:text-white/30"
+                            />
+                        </div>
+
+                        {/* Search Results - Only show when typing */}
+                        {searchQuery.trim() && (
+                            <div className="max-h-[420px] overflow-y-auto border-t border-white/10">
+                                {filteredItems.length > 0 ? (
+                                    <div className="py-1">
+                                        {/* Apps Section */}
+                                        {groupedResults.app.length > 0 && (
+                                            <>
+                                                {groupedResults.app.map((item, index) => {
+                                                    const Icon = item.icon!;
+                                                    const cumIndex = getCumulativeIndex('app', index);
+                                                    return (
+                                                        <button
+                                                            key={item.id}
+                                                            onClick={() => handleSelectItem(item)}
+                                                            className={`w-full flex items-center gap-4 px-5 py-2.5 transition-colors ${cumIndex === selectedIndex
+                                                                ? 'bg-blue-500'
+                                                                : 'hover:bg-white/5'
+                                                                }`}
+                                                        >
+                                                            <div
+                                                                className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                                                                style={{ background: 'rgba(255,255,255,0.1)' }}
+                                                            >
+                                                                <Icon className="w-5 h-5 text-white" />
+                                                            </div>
+                                                            <div className="text-left">
+                                                                <div className="text-white text-[14px]">
+                                                                    {item.title}
+                                                                </div>
+                                                                <div className="text-white/50 text-[11px]">
+                                                                    {item.category}
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </>
+                                        )}
+
+                                        {/* Projects Section */}
+                                        {groupedResults.projects.length > 0 && (
+                                            <>
+                                                {groupedResults.projects.map((item, index) => {
+                                                    const cumIndex = getCumulativeIndex('projects', index);
+                                                    return (
+                                                        <button
+                                                            key={item.id}
+                                                            onClick={() => handleSelectItem(item)}
+                                                            className={`w-full flex items-center gap-4 px-5 py-2.5 transition-colors ${cumIndex === selectedIndex
+                                                                ? 'bg-blue-500'
+                                                                : 'hover:bg-white/5'
+                                                                }`}
+                                                        >
+                                                            <div
+                                                                className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                                                                style={{ background: 'rgba(255,200,50,0.15)' }}
+                                                            >
+                                                                <Folder className="w-5 h-5 text-yellow-400" />
+                                                            </div>
+                                                            <div className="text-left flex-1">
+                                                                <div className="text-white text-[14px]">
+                                                                    {item.title}
+                                                                </div>
+                                                                <div className="text-white/50 text-[11px]">
+                                                                    {item.category}
+                                                                </div>
+                                                            </div>
+                                                            <ExternalLink className="w-4 h-4 text-white/30" />
+                                                        </button>
+                                                    );
+                                                })}
+                                            </>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="py-8 text-center text-white/40 text-sm">
+                                        No results for "{searchQuery}"
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}

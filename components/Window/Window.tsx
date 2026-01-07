@@ -94,7 +94,7 @@ export default function Window({ window: windowState, children }: WindowProps) {
     if (windowState.isMinimized) return null;
 
     const windowStyle = windowState.isMaximized
-        ? { left: 0, top: 0, width: '100%', height: 'calc(100vh - 70px)' }
+        ? { left: 0, top: 28, width: '100%', height: 'calc(100vh - 28px)' }
         : {
             left: windowState.position.x,
             top: windowState.position.y,
@@ -119,34 +119,34 @@ export default function Window({ window: windowState, children }: WindowProps) {
         >
             {/* Window Header */}
             <div
-                className={`h-10 bg-[#1e1e1e] flex items-center px-3 select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+                className={`h-7 bg-[#1e1e1e] flex items-center px-4 select-none group/header ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                 onMouseDown={handleDragStart}
             >
                 {/* Traffic Light Controls */}
-                <div className="flex gap-2 mr-4">
+                <div className="flex gap-2 mr-4" style={{ marginLeft: '12px' }}>
                     <button
                         onClick={(e) => { e.stopPropagation(); closeWindow(windowState.id); }}
-                        className="w-3 h-3 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 transition-colors flex items-center justify-center group cursor-pointer"
+                        className="w-3 h-3 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 transition-colors flex items-center justify-center cursor-pointer"
                         title="Close"
                     >
-                        <X className="w-2 h-2 text-[#4a0000] opacity-0 group-hover:opacity-100" />
+                        <X className="w-2 h-2 text-[#4a0000] opacity-0 group-hover/header:opacity-100 transition-opacity" />
                     </button>
                     <button
                         onClick={(e) => { e.stopPropagation(); minimizeWindow(windowState.id); }}
-                        className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:bg-[#ffbd2e]/80 transition-colors flex items-center justify-center group cursor-pointer"
+                        className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:bg-[#ffbd2e]/80 transition-colors flex items-center justify-center cursor-pointer"
                         title="Minimize"
                     >
-                        <Minus className="w-2 h-2 text-[#4a3000] opacity-0 group-hover:opacity-100" />
+                        <Minus className="w-2 h-2 text-[#4a3000] opacity-0 group-hover/header:opacity-100 transition-opacity" />
                     </button>
                     <button
                         onClick={(e) => { e.stopPropagation(); maximizeWindow(windowState.id); }}
-                        className="w-3 h-3 rounded-full bg-[#27c93f] hover:bg-[#27c93f]/80 transition-colors flex items-center justify-center group cursor-pointer"
+                        className="w-3 h-3 rounded-full bg-[#27c93f] hover:bg-[#27c93f]/80 transition-colors flex items-center justify-center cursor-pointer"
                         title={windowState.isMaximized ? "Restore" : "Maximize"}
                     >
                         {windowState.isMaximized ? (
-                            <Square className="w-1.5 h-1.5 text-[#004a00] opacity-0 group-hover:opacity-100" />
+                            <Square className="w-1.5 h-1.5 text-[#004a00] opacity-0 group-hover/header:opacity-100 transition-opacity" />
                         ) : (
-                            <Maximize2 className="w-2 h-2 text-[#004a00] opacity-0 group-hover:opacity-100" />
+                            <Maximize2 className="w-2 h-2 text-[#004a00] opacity-0 group-hover/header:opacity-100 transition-opacity" />
                         )}
                     </button>
                 </div>
@@ -158,18 +158,16 @@ export default function Window({ window: windowState, children }: WindowProps) {
             </div>
 
             {/* Window Content */}
-            <div className="h-[calc(100%-40px)] overflow-auto bg-[#0a0a0a]">
+            <div className="h-[calc(100%-28px)] overflow-auto bg-[#0a0a0a]">
                 {children}
             </div>
 
             {/* Resize Handle */}
             {!windowState.isMaximized && (
                 <div
-                    className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize"
+                    className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize z-10"
                     onMouseDown={handleResizeStart}
-                >
-                    <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-white/30" />
-                </div>
+                />
             )}
         </motion.div>
     );

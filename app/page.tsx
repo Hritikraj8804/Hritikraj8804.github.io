@@ -5,12 +5,13 @@ import { AnimatePresence } from 'framer-motion';
 import { WindowManagerProvider, useWindowManager } from '@/components/Window/WindowManagerContext';
 import Window from '@/components/Window/Window';
 import Desktop from '@/components/Desktop/Desktop';
-import Taskbar from '@/components/Desktop/Taskbar';
+import TopMenuBar from '@/components/Desktop/TopMenuBar';
 import Terminal from '@/components/Apps/Terminal';
 import Projects from '@/components/Apps/Projects';
 import About from '@/components/Apps/About';
 import Contact from '@/components/Apps/Contact';
 import Resume from '@/components/Apps/Resume';
+import AboutSite from '@/components/Apps/AboutSite';
 
 const appComponents: Record<string, React.ComponentType> = {
   terminal: Terminal,
@@ -18,6 +19,7 @@ const appComponents: Record<string, React.ComponentType> = {
   about: About,
   contact: Contact,
   resume: Resume,
+  aboutsite: AboutSite,
 };
 
 function WindowManager() {
@@ -42,15 +44,17 @@ function WindowManager() {
 export default function Home() {
   return (
     <WindowManagerProvider>
-      <main className="relative h-screen w-screen overflow-hidden bg-[#0a0a0a]">
+      <main className="relative h-screen w-screen overflow-hidden bg-[#0a0a0a] flex flex-col">
+        {/* Top Menu Bar */}
+        <TopMenuBar />
+
         {/* Desktop Background & Icons */}
-        <Desktop />
+        <div className="flex-1 relative">
+          <Desktop />
+        </div>
 
         {/* Windows */}
         <WindowManager />
-
-        {/* Taskbar */}
-        <Taskbar />
       </main>
     </WindowManagerProvider>
   );
