@@ -119,7 +119,7 @@ export default function Window({ window: windowState, children }: WindowProps) {
         >
             {/* Window Header */}
             <div
-                className={`h-10 bg-[#1e1e1e] flex items-center px-4 select-none group/header ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+                className={`h-7 bg-[#1e1e1e] flex items-center px-4 select-none group/header ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                 onMouseDown={handleDragStart}
             >
                 {/* Traffic Light Controls */}
