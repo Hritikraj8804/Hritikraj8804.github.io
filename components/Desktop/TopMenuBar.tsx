@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Apple, Search, Folder, User, Terminal, Mail, FileText, ExternalLink, Monitor, Github, Rss, X } from 'lucide-react';
+import { Apple, Search, Folder, User, Terminal, Mail, FileText, ExternalLink } from 'lucide-react';
 import { useWindowManager } from '@/components/Window/WindowManagerContext';
 
 // Apps
@@ -59,7 +59,6 @@ export default function TopMenuBar() {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isAboutOpen, setIsAboutOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -165,7 +164,12 @@ export default function TopMenuBar() {
     };
 
     const handleAboutThisSite = () => {
-        setIsAboutOpen(true);
+        openWindow({
+            title: 'About This Site',
+            component: 'aboutsite',
+            position: { x: 300, y: 150 },
+            size: { width: 400, height: 480 }
+        });
         setIsMenuOpen(false);
     };
 
@@ -250,8 +254,8 @@ export default function TopMenuBar() {
                                 key={win.id}
                                 onClick={() => focusWindow(win.id)}
                                 className={`flex items-center gap-1.5 px-2 py-1 rounded text-[12px] transition-all ${isActive
-                                        ? 'bg-white/15 text-white'
-                                        : 'text-white/60 hover:bg-white/10 hover:text-white/90'
+                                    ? 'bg-white/15 text-white'
+                                    : 'text-white/60 hover:bg-white/10 hover:text-white/90'
                                     }`}
                                 title={win.title}
                             >
@@ -396,112 +400,6 @@ export default function TopMenuBar() {
                                 )}
                             </div>
                         )}
-                    </div>
-                </div>
-            )}
-
-            {/* About This Site Modal */}
-            {isAboutOpen && (
-                <div
-                    className="fixed inset-0 z-[10000] flex items-center justify-center"
-                    style={{ background: 'rgba(0,0,0,0.5)' }}
-                    onClick={(e) => {
-                        if (e.target === e.currentTarget) setIsAboutOpen(false);
-                    }}
-                >
-                    <div
-                        className="w-[420px] rounded-xl overflow-hidden shadow-2xl"
-                        style={{
-                            background: '#1a1a1a',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            boxShadow: '0 25px 80px rgba(0,0,0,0.6)'
-                        }}
-                    >
-                        {/* Window Header */}
-                        <div
-                            className="h-9 flex items-center px-4 relative group/header"
-                            style={{
-                                background: 'linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%)',
-                                borderBottom: '1px solid rgba(0,0,0,0.3)'
-                            }}
-                        >
-                            {/* Traffic Lights */}
-                            <div className="flex items-center gap-2" style={{ marginLeft: '4px' }}>
-                                <button
-                                    onClick={() => setIsAboutOpen(false)}
-                                    className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-110 transition-all"
-                                />
-                                <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                                <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-                            </div>
-                            <span className="absolute left-1/2 -translate-x-1/2 text-[13px] font-medium text-white/80">
-                                About This Site
-                            </span>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-8 flex flex-col items-center">
-                            {/* Computer Icon */}
-                            <div
-                                className="w-16 h-16 mb-5 rounded-lg flex items-center justify-center"
-                                style={{ background: '#3b82f6' }}
-                            >
-                                <Monitor className="w-8 h-8 text-white" />
-                            </div>
-
-                            {/* Site Name */}
-                            <h2 className="text-2xl font-bold text-white mb-1">
-                                Hritik Raj
-                            </h2>
-                            <p className="text-white/50 mb-6 text-sm">
-                                macOS-inspired portfolio experience
-                            </p>
-
-                            {/* Info Table */}
-                            <div
-                                className="w-full rounded-lg p-4 mb-6 text-[13px]"
-                                style={{
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.1)'
-                                }}
-                            >
-                                <div className="flex justify-between py-2 border-b border-white/10">
-                                    <span className="text-white/60">Developer</span>
-                                    <span className="text-white">Hritik Raj</span>
-                                </div>
-                                <div className="flex justify-between py-2 border-b border-white/10">
-                                    <span className="text-white/60">Built with</span>
-                                    <span className="text-blue-400">Next.js + TypeScript</span>
-                                </div>
-                                <div className="flex justify-between py-2 border-b border-white/10">
-                                    <span className="text-white/60">Extras</span>
-                                    <span className="text-orange-400">Tailwind, Framer Motion</span>
-                                </div>
-                                <div className="flex justify-between py-2">
-                                    <span className="text-white/60">Updated</span>
-                                    <span className="text-white">
-                                        {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Action Button */}
-                            <a
-                                href="https://github.com/Hritikraj8804/Hritikraj8804.github.io"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-5 py-2 rounded-lg text-white text-sm font-medium hover:opacity-90 transition-opacity"
-                                style={{ background: '#1f1f1f', border: '1px solid rgba(255,255,255,0.15)' }}
-                            >
-                                <Github className="w-4 h-4" />
-                                View Source
-                            </a>
-
-                            {/* Copyright */}
-                            <p className="text-white/30 text-sm mt-4">
-                                © 2026 Hritik Raj
-                            </p>
-                        </div>
                     </div>
                 </div>
             )}
