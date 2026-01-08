@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Loader2, Calendar, Link as LinkIcon, Github } from 'lucide-react';
+import { Loader2, Calendar, Link as LinkIcon, Github, ArrowUpRight, Copy, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -12,6 +12,61 @@ import { motion } from 'framer-motion';
 interface ProjectDetailsProps {
     project: Project;
 }
+
+const CodeBlock = ({ className, children, ...rest }: any) => {
+    const [copied, setCopied] = useState(false);
+    const match = /language-(\w+)/.exec(className || '');
+    const codeString = String(children).replace(/\n$/, '');
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(codeString);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    if (!match) {
+        return (
+            <code className={className} {...rest}>
+                {children}
+            </code>
+        );
+    }
+
+    return (
+        <div className="rounded-xl overflow-hidden my-12 border border-gray-200 bg-gray-50 shadow-sm relative group text-left">
+            <div className="bg-white px-5 py-4 flex items-center justify-between border-b border-gray-100">
+                <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-gray-200" />
+                    <div className="w-3 h-3 rounded-full bg-gray-200" />
+                    <div className="w-3 h-3 rounded-full bg-gray-200" />
+                </div>
+                <div className="flex items-center gap-3">
+                    <span className="text-xs text-gray-500 font-mono uppercase tracking-wider font-semibold">
+                        {match[1]}
+                    </span>
+                    <button
+                        onClick={handleCopy}
+                        className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors"
+                        title="Copy code"
+                    >
+                        {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+                    </button>
+                </div>
+            </div>
+            <div className="text-sm">
+                <SyntaxHighlighter
+                    style={vscDarkPlus}
+                    language={match[1]}
+                    PreTag="div"
+                    customStyle={{ margin: 0, padding: '1.5rem', borderRadius: 0, fontSize: '0.9rem', lineHeight: '1.6' }}
+                    {...rest}
+                >
+                    {codeString}
+                </SyntaxHighlighter>
+            </div>
+        </div>
+    );
+};
 
 export default function ProjectDetails({ project }: ProjectDetailsProps) {
     const [markdown, setMarkdown] = useState<string | null>(null);
@@ -42,7 +97,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
 
     if (!project) {
         return (
-            <div className="h-full flex items-center justify-center text-gray-400 bg-white">
+            <div className="h-full flex items-center justify-center text-gray-500 bg-white">
                 Project not found
             </div>
         );
@@ -51,7 +106,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     if (isLoading) {
         return (
             <div className="h-full flex items-center justify-center bg-white">
-                <div className="flex items-center gap-3 text-gray-500">
+                <div className="flex items-center gap-3 text-gray-400">
                     <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Loading...</span>
                 </div>
@@ -60,154 +115,101 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     }
 
     return (
-        <div className="h-full bg-white overflow-y-auto text-gray-800 font-sans">
-            {/* Header Section */}
-            <div className="bg-gray-50 border-b border-gray-200 py-10 px-8">
-                <div className="max-w-3xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="space-y-4"
-                    >
-                        <div className="flex items-center gap-3 text-sm text-gray-500 mb-2">
-                            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium text-xs uppercase tracking-wider">
+        <div className="h-full w-full bg-white overflow-y-auto font-sans selection:bg-sky-100 selection:text-sky-900 text-black">
+            <div className="min-h-full px-12 md:px-20 py-16">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="max-w-4xl mx-auto space-y-8 text-center"
+                >
+                    {/* Header */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-center gap-3 text-sm text-gray-600">
+                            <span className="bg-gray-100 text-black px-4 py-1.5 rounded-full font-bold text-xs tracking-wide border border-gray-200">
                                 {project.year}
                             </span>
-                            <span className="flex items-center gap-1">
-                                <Calendar size={14} />
+                            <span className="flex items-center gap-1.5 text-gray-500 font-medium">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
                                 {project.month}
                             </span>
                         </div>
 
-                        <h1 className="text-4xl font-bold text-gray-900 tracking-tight leading-tight">
+                        <h1 className="text-5xl md:text-6xl font-extrabold text-black tracking-tight leading-tight">
                             {project.title}
                         </h1>
 
-                        <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
+                        <p className="text-xl md:text-2xl text-gray-900 leading-relaxed max-w-3xl mx-auto font-normal">
                             {project.description}
                         </p>
 
-                        <div className="flex flex-wrap gap-2 pt-2">
+                        <div className="flex flex-wrap justify-center gap-3 pt-4">
                             {project.tags.map(tag => (
-                                <span key={tag} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                <span
+                                    key={tag}
+                                    className="bg-sky-50 border border-sky-200 text-sky-700 px-4 py-1.5 rounded-full text-sm uppercase tracking-wide font-bold hover:bg-sky-100 hover:border-sky-300 transition-colors cursor-default"
+                                >
                                     {tag}
                                 </span>
                             ))}
                         </div>
 
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex justify-center gap-5 pt-8">
+                            {project.source && (
+                                <a
+                                    href={project.source}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center gap-2 text-black hover:text-gray-700 transition-colors font-bold border-2 border-gray-200 px-8 py-3 rounded-full hover:border-black hover:bg-white text-base"
+                                >
+                                    <Github size={20} className="text-black group-hover:scale-110 transition-transform" />
+                                    <span>Source</span>
+                                </a>
+                            )}
                             {project.link && (
                                 <a
                                     href={project.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors font-medium border border-gray-300 px-4 py-2 rounded-lg hover:border-blue-400 hover:bg-blue-50"
+                                    className="group flex items-center gap-2 bg-black text-white hover:bg-gray-800 transition-colors px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200 text-base"
                                 >
-                                    <Github size={18} />
-                                    <span>View Source</span>
+                                    <span>Visit Project</span>
+                                    <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                 </a>
                             )}
-                            <a
-                                href={project.link} // fallback if separate demo link isn't in generic project type yet, or use link for both
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 bg-gray-900 text-white hover:bg-black transition-colors px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow"
-                            >
-                                <LinkIcon size={18} />
-                                <span>Visit Project</span>
-                            </a>
                         </div>
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* Markdown Content */}
-            <article className="max-w-3xl mx-auto px-8 py-12 prose prose-lg prose-gray
-                
-                // Headings
-                prose-headings:font-bold prose-headings:text-gray-900 prose-headings:tracking-tight
-                prose-h1:text-3xl prose-h1:mb-8
-                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-100
-                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
-
-                // Text
-                prose-p:text-gray-700 prose-p:leading-8 prose-p:my-6
-                prose-strong:text-gray-900 prose-strong:font-bold
-                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-gray-700
-                
-                // Links
-                prose-a:text-blue-600 prose-a:no-underline prose-a:border-b prose-a:border-blue-200 hover:prose-a:border-blue-600 hover:prose-a:text-blue-700 transition-colors
-
-                // Lists
-                prose-ul:my-6 prose-li:my-2 prose-li:text-gray-700
-                
-                // Code
-                prose-code:bg-gray-100 prose-code:text-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-[0.9em] prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0
-
-                // Images
-                prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-gray-100 prose-img:my-8
-
-                // Tables
-                prose-table:border prose-table:border-gray-200 prose-table:rounded-lg prose-table:overflow-hidden
-                prose-th:bg-gray-50 prose-th:p-4 prose-th:text-gray-900
-                prose-td:p-4 prose-td:border-t prose-td:border-gray-100
-            ">
-                {markdown ? (
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            // Custom code block renderer with syntax highlighting
-                            code(props: any) {
-                                const { node, inline, className, children, ...rest } = props;
-                                const match = /language-(\w+)/.exec(className || '');
-                                return !inline && match ? (
-                                    <div className="rounded-xl overflow-hidden shadow-sm my-8 border border-gray-200">
-                                        <div className="bg-[#1e1e1e] px-4 py-2 flex items-center gap-2 border-b border-gray-700/50">
-                                            <div className="flex gap-1.5">
-                                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                                                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
-                                            </div>
-                                            <span className="text-xs text-gray-400 font-mono ml-2 uppercase">
-                                                {match[1]}
-                                            </span>
-                                        </div>
-                                        <SyntaxHighlighter
-                                            style={vscDarkPlus}
-                                            language={match[1]}
-                                            PreTag="div"
-                                            customStyle={{ margin: 0, borderRadius: 0 }}
-                                            {...rest}
-                                        >
-                                            {String(children).replace(/\n$/, '')}
-                                        </SyntaxHighlighter>
-                                    </div>
-                                ) : (
-                                    <code className={className} {...rest}>
-                                        {children}
-                                    </code>
-                                );
-                            },
-                            // Custom components for custom shortcodes from Hugo (e.g. {{< youtube >}})
-                            // Since we're raw rendering, we might see text like {{< youtube ... >}}
-                            // We can't easily parse Hugo shortcodes in client-side react-markdown without a custom plugin
-                            // But we can try to style them if they appear as text, or just accept that strict Hugo shortcodes won't render.
-                            // However, standard MD images will render fine.
-                        }}
-                    >
-                        {markdown}
-                    </ReactMarkdown>
-                ) : (
-                    <div className="text-center py-20 text-gray-500">
-                        Content loading or not available...
                     </div>
-                )}
-            </article>
 
-            {/* Footer */}
-            <div className="border-t border-gray-200 py-10 text-center text-gray-400 text-sm">
-                Thanks for viewing {project.title}!
+                    <div className="w-full h-px bg-gray-100 my-16" />
+
+                    {/* Markdown Content */}
+                    <article className="prose prose-xl prose-headings:text-black prose-p:text-gray-900 prose-p:leading-loose prose-li:text-gray-900 prose-strong:text-black prose-a:text-sky-600 prose-blockquote:text-gray-900 prose-th:text-black prose-td:text-gray-900
+                    text-left mx-auto max-w-none
+                    prose-headings:font-bold prose-headings:tracking-tight
+                    prose-p:mb-8 prose-li:mb-4
+                    prose-img:rounded-3xl prose-img:shadow-2xl prose-img:border prose-img:border-gray-100 prose-img:my-12
+                    ">
+                        {markdown ? (
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                    code: CodeBlock
+                                }}
+                            >
+                                {markdown}
+                            </ReactMarkdown>
+                        ) : (
+                            <div className="text-center py-20 text-gray-500 font-medium text-lg">
+                                Loading detailed view...
+                            </div>
+                        )}
+                    </article>
+
+                    {/* Footer */}
+                    <div className="pt-20 pb-10 text-center">
+                        <p className="text-gray-400 text-sm font-semibold tracking-wide uppercase">Designed for {project.title}</p>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );
