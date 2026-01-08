@@ -1,13 +1,152 @@
 {
   "projects": [
     {
-      "title": "ml-sandbox",
-      "description": "",
-      "tags": [],
-      "link": "https://github.com/Hritikraj8804/ml-sandbox",
+      "title": "AutoTube",
+      "description": "AutoTube is an automation-based tool that simplifies YouTube content workflows by automating repetitive tasks using Python.",
+      "tags": [
+        "PYTHON",
+        "AUTOMATION",
+        "YOUTUBE",
+        "API"
+      ],
+      "link": "https://github.com/Hritikraj8804/autotube",
+      "year": 2025,
+      "month": "Dec",
+      "status": "COMPLETED",
+      "slug": "autotube"
+    },
+    {
+      "title": "Food Ordering System",
+      "description": "Food Ordering System is a web-based platform that enables users to browse menus, place food orders, and manage cart operations with a seamless interface.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "PHP",
+        "MySQL",
+        "WEB"
+      ],
+      "link": "https://github.com/Hritikraj8804/food-ordering-system",
+      "year": 2025,
+      "month": "Nov",
+      "status": "COMPLETED",
+      "slug": "food-ordering-system"
+    },
+    {
+      "title": "DevOps Python App",
+      "description": "DevOps Python App is an application that demonstrates DevOps practices using Python, automation, and CI/CD tooling for streamlined development and deployment.",
+      "tags": [
+        "PYTHON",
+        "DEVOPS",
+        "CI/CD",
+        "AUTOMATION",
+        "DOCKER"
+      ],
+      "link": "https://github.com/Hritikraj8804/devops-python-app",
+      "year": 2025,
+      "month": "Aug",
+      "status": "COMPLETED",
+      "slug": "devops-python-app"
+    },
+    {
+      "title": "My Node DevOps App",
+      "description": "My Node DevOps App is a full-stack application demonstrating DevOps practices with Node.js, CI/CD tooling, and automated deployment workflows.",
+      "tags": [
+        "NODE.JS",
+        "DEVOPS",
+        "CI/CD",
+        "JAVASCRIPT",
+        "DOCKER",
+        "AWS"
+      ],
+      "link": "https://github.com/Hritikraj8804/node-devops-app",
+      "year": 2025,
+      "month": "Aug",
+      "status": "COMPLETED",
+      "slug": "node-devops-app"
+    },
+    {
+      "title": "AI Ticket Assistant",
+      "description": "AI Ticket Assistant is an intelligent support system that automatically categorizes and responds to help-desk tickets using natural language processing and machine learning.",
+      "tags": [
+        "PYTHON",
+        "FLASK",
+        "NLP",
+        "ML",
+        "AI",
+        "WEB"
+      ],
+      "link": "https://github.com/Hritikraj8804/ai-ticket-assistant",
+      "year": 2025,
+      "month": "Jun",
+      "status": "COMPLETED",
+      "slug": "ai-ticket-assistant"
+    },
+    {
+      "title": "Terminal Troubleshooter",
+      "description": "Terminal Troubleshooter is a command-line utility that helps users diagnose and fix common terminal and system errors using guided steps and automated suggestions.",
+      "tags": [
+        "PYTHON",
+        "CLI",
+        "AUTOMATION",
+        "SYSTEM-TOOLS"
+      ],
+      "link": "https://github.com/Hritikraj8804/terminal_troubleshooter",
+      "year": 2025,
+      "month": "May",
+      "status": "COMPLETED",
+      "slug": "terminal_troubleshooter"
+    },
+    {
+      "title": "Pariksha",
+      "description": "Pariksha is an online examination system designed to facilitate the creation, management, and evaluation of tests with ease.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JAVASCRIPT",
+        "PHP",
+        "MYSQL",
+        "WEB"
+      ],
+      "link": "https://github.com/Hritikraj8804/pariksha",
+      "year": 2025,
+      "month": "Apr",
+      "status": "COMPLETED",
+      "slug": "pariksha"
+    },
+    {
+      "title": "Sentiment-Analysis",
+      "description": "Sentiment-Analysis is a web-based application that analyzes user-provided text and determines its sentiment using machine learning techniques.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "FLASK",
+        "PYTHON",
+        "NLP",
+        "ML"
+      ],
+      "link": "https://sentiment.chcha.in",
+      "year": 2025,
+      "month": "Feb",
+      "status": "COMPLETED",
+      "slug": "sentiment-analysis"
+    },
+    {
+      "title": "ML-SandBox",
+      "description": "ML-SandBox is an interactive web-based application designed for performing machine learning tasks on user-uploaded datasets.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "FLASK",
+        "PYTHON",
+        "ML"
+      ],
+      "link": "https://sandbox.chcha.in",
       "year": 2024,
       "month": "Dec",
-      "status": null,
+      "status": "COMPLETED",
       "slug": "ml-sandbox"
     },
     {
@@ -23,6 +162,23 @@
       "month": "Nov",
       "status": "NEW",
       "slug": "bugbuster"
+    },
+    {
+      "title": "EduKestra",
+      "description": "EduKestra is an educational platform designed to provide interactive learning tools, courses, and resources through a web-based interface.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "FLASK",
+        "PYTHON",
+        "WEB"
+      ],
+      "link": "https://github.com/Hritikraj8804/edukestra",
+      "year": 2024,
+      "month": "Nov",
+      "status": "COMPLETED",
+      "slug": "edukestra"
     }
   ]
 }
