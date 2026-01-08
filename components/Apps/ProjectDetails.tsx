@@ -158,7 +158,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                         remarkPlugins={[remarkGfm]}
                         components={{
                             // Custom code block renderer with syntax highlighting
-                            code({ node, inline, className, children, ...props }) {
+                            code(props: any) {
+                                const { node, inline, className, children, ...rest } = props;
                                 const match = /language-(\w+)/.exec(className || '');
                                 return !inline && match ? (
                                     <div className="rounded-xl overflow-hidden shadow-sm my-8 border border-gray-200">
@@ -177,13 +178,13 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                                             language={match[1]}
                                             PreTag="div"
                                             customStyle={{ margin: 0, borderRadius: 0 }}
-                                            {...props}
+                                            {...rest}
                                         >
                                             {String(children).replace(/\n$/, '')}
                                         </SyntaxHighlighter>
                                     </div>
                                 ) : (
-                                    <code className={className} {...props}>
+                                    <code className={className} {...rest}>
                                         {children}
                                     </code>
                                 );
