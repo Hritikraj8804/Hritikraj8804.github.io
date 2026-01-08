@@ -35,6 +35,7 @@ export interface Project {
     description: string;
     tags: string[];
     link: string;
+    source?: string;
     year: number;
     month: string;
     status?: 'NEW' | 'FEATURED';

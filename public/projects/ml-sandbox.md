@@ -3,7 +3,7 @@ title: "ML-SandBox"
 date: "2024-12-27"
 description: "ML-SandBox is an interactive web-based application designed for performing machine learning tasks on user-uploaded datasets."
 tags: ["HTML", "CSS", "JavaScript", "FLASK", "PYTHON", "ML"]
-source: "https://github.com/Hritikraj8804/BugBuster"
+source: "https://github.com/Hritikraj8804/ml-sandbox"
 link: "https://sandbox.chcha.in"
 status: "COMPLETED"
 ---

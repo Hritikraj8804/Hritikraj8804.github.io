@@ -96,9 +96,9 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                         </div>
 
                         <div className="flex gap-4 pt-4">
-                            {project.link && (
+                            {project.source && (
                                 <a
-                                    href={project.link}
+                                    href={project.source}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors font-medium border border-gray-300 px-4 py-2 rounded-lg hover:border-blue-400 hover:bg-blue-50"
@@ -107,15 +107,17 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                                     <span>View Source</span>
                                 </a>
                             )}
-                            <a
-                                href={project.link} // fallback if separate demo link isn't in generic project type yet, or use link for both
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 bg-gray-900 text-white hover:bg-black transition-colors px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow"
-                            >
-                                <LinkIcon size={18} />
-                                <span>Visit Project</span>
-                            </a>
+                            {project.link && (
+                                <a
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 bg-gray-900 text-white hover:bg-black transition-colors px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow"
+                                >
+                                    <LinkIcon size={18} />
+                                    <span>Visit Project</span>
+                                </a>
+                            )}
                         </div>
                     </motion.div>
                 </div>

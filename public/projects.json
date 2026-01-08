@@ -9,7 +9,8 @@
         "YOUTUBE",
         "API"
       ],
-      "link": "https://github.com/Hritikraj8804/autotube",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/Autotube",
       "year": 2025,
       "month": "Dec",
       "status": "COMPLETED",
@@ -26,7 +27,8 @@
         "MySQL",
         "WEB"
       ],
-      "link": "https://github.com/Hritikraj8804/food-ordering-system",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/food-ordering-system",
       "year": 2025,
       "month": "Nov",
       "status": "COMPLETED",
@@ -42,7 +44,8 @@
         "AUTOMATION",
         "DOCKER"
       ],
-      "link": "https://github.com/Hritikraj8804/devops-python-app",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/devops-python-app",
       "year": 2025,
       "month": "Aug",
       "status": "COMPLETED",
@@ -59,7 +62,8 @@
         "DOCKER",
         "AWS"
       ],
-      "link": "https://github.com/Hritikraj8804/node-devops-app",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/my-node-devops-app",
       "year": 2025,
       "month": "Aug",
       "status": "COMPLETED",
@@ -76,7 +80,8 @@
         "AI",
         "WEB"
       ],
-      "link": "https://github.com/Hritikraj8804/ai-ticket-assistant",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/AI-ticket-assistant",
       "year": 2025,
       "month": "Jun",
       "status": "COMPLETED",
@@ -91,7 +96,8 @@
         "AUTOMATION",
         "SYSTEM-TOOLS"
       ],
-      "link": "https://github.com/Hritikraj8804/terminal_troubleshooter",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/terminal_troubleshooter",
       "year": 2025,
       "month": "May",
       "status": "COMPLETED",
@@ -108,7 +114,8 @@
         "MYSQL",
         "WEB"
       ],
-      "link": "https://github.com/Hritikraj8804/pariksha",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/Pariksha",
       "year": 2025,
       "month": "Apr",
       "status": "COMPLETED",
@@ -127,6 +134,7 @@
         "ML"
       ],
       "link": "https://sentiment.chcha.in",
+      "source": "https://github.com/Hritikraj8804/Sentiment-Analysis",
       "year": 2025,
       "month": "Feb",
       "status": "COMPLETED",
@@ -144,6 +152,7 @@
         "ML"
       ],
       "link": "https://sandbox.chcha.in",
+      "source": "https://github.com/Hritikraj8804/ml-sandbox",
       "year": 2024,
       "month": "Dec",
       "status": "COMPLETED",
@@ -158,6 +167,7 @@
         "JavaScript"
       ],
       "link": "https://github.com/Hritikraj8804/BugBuster",
+      "source": "https://github.com/Hritikraj8804/bugbuster",
       "year": 2024,
       "month": "Nov",
       "status": "NEW",
@@ -174,7 +184,8 @@
         "PYTHON",
         "WEB"
       ],
-      "link": "https://github.com/Hritikraj8804/edukestra",
+      "link": "",
+      "source": "https://github.com/Hritikraj8804/EduKestra",
       "year": 2024,
       "month": "Nov",
       "status": "COMPLETED",
