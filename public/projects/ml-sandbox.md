@@ -10,97 +10,42 @@ status: "COMPLETED"
 
 # ML SandBox
 
-**ML-SandBox** is an interactive web-based application designed for performing machine learning tasks on user-uploaded datasets. The platform enables users to choose specific algorithms and executes them in the backend using Jupyter Notebook, presenting the results seamlessly on the webpage.
+**ML-SandBox** is an interactive platform for running machine learning algorithms on user-uploaded datasets directly from the browser. It leverages a Flask backend to execute Python ML tasks.
 
-## Key Features
+## Features
+- 📂 **Dataset Upload** - Easy CSV upload.
+- 🤖 **Algorithms** - Classification, Find-S, Candidate Key Elimination.
+- ⚡ **Real-time Processing** - Backend execution via Python.
+- 📊 **Visualization** - User-friendly result display.
 
-- **Dataset Upload**: Users can upload their datasets directly from the webpage.
-- **Algorithm Selection**: Users can choose from the following algorithms:
-  - Classification
-  - Find-S Algorithm
-  - Candidate Key Elimination
-- **Backend Processing**: The selected algorithm is executed using Jupyter Notebook in the backend.
-- **Result Visualization**: The output of the algorithm is displayed in a user-friendly format on the webpage.
+## Quick Start
 
-## Project Architecture
+### Setup & Run
+```bash
+# 1. Clone
+git clone https://github.com/Hritikraj8804/ml-sandbox.git
+cd ml-sandbox
 
-1. **Frontend**:
-   - Provides an intuitive user interface for dataset upload and algorithm selection.
-   - Built using HTML, CSS, and JavaScript for a seamless user experience.
+# 2. Virtual Env
+python -m venv env
+source env/bin/activate  # Windows: env\Scripts\activate
 
-2. **Backend**:
-   - Handles the execution of machine learning algorithms using Jupyter Notebook.
-   - Processes the uploaded datasets and generates the desired outputs.
+# 3. Backend Setup
+cd backend
+pip install -r requirements.txt
+python app.py
 
-3. **Integration**:
-   - The frontend and backend communicate effectively to ensure smooth data transfer and result visualization.
-
-## Getting Started
-
-### Prerequisites
-
-- **Python** (version >= 3.7)
-- **Jupyter Notebook**
-- **Node.js** (for frontend setup, if applicable)
-- **Required Python Libraries**:
-  - pandas
-  - numpy
-  - scikit-learn
-  - flask (or any preferred backend framework)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/ml-sandbox.git
-   cd ml-sandbox
-   ```
-
-2. Set up the Python environment:
-   ```bash
-   python -m venv env
-   source env/bin/activate   # On Windows: env\Scripts\activate
-   ```
-
-3. Change directory to backend:
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   ```
-
-4. Start the backend server:
-   ```bash
-   python app.py
-   ```
-
-5. Open the frontend in your browser by navigating to the specified URL.
-
-### Usage
-
-1. Upload your dataset in CSV format via the webpage.
-2. Select an algorithm from the provided options.
-3. Click "Run" to execute the algorithm.
-4. View the results directly on the webpage.
+# 4. Access
+# Open the URL shown in terminal (usually http://localhost:5000)
+```
 
 ## Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| HTML/CSS/JS | Frontend |
-| Flask | Backend framework |
-| Python | ML algorithms |
-| Jupyter | Notebook execution |
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Flask (Python)
+- **ML Core**: Pandas, Scikit-learn, NumPy
 
 ## Contributing
+Fork -> Branch -> Commit -> Push -> PR. 🚀
 
-We welcome contributions to **ML-SandBox**! To contribute:
-
-1. Fork the repository.
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a pull request.
-  
 ---
-
-We hope you find **ML-SandBox** useful for your machine learning experiments! 🚀
+*Run ML experiments instantly with ML-SandBox!* 🚀
